@@ -144,17 +144,22 @@ row_num = 0
 
 def check_string(string, keywords, verbose, sheet, url, log_file, company, fiscal_year):
     global row_num
+    matched_words = []
     for word in keywords:
         if word in string.lower():
             if verbose:
                 print_log("{}\n{}".format(word, string), log_file)
-            sheet.write(row_num, 0, str(company.cik))
-            sheet.write(row_num, 1, str(company.name))
-            sheet.write(row_num, 2, fiscal_year)
-            sheet.write(row_num, 3, str(url))
-            sheet.write(row_num, 4, string[0:32767])
-            row_num += 1
-            return True
+            matched_words.append(word)
+
+    if len(matched_words) > 0:
+        sheet.write(row_num, 0, str(company.cik))
+        sheet.write(row_num, 1, str(company.name))
+        sheet.write(row_num, 2, fiscal_year)
+        sheet.write(row_num, 3, str(matched_words))
+        sheet.write(row_num, 4, str(url))
+        sheet.write(row_num, 5, string[0:32767])
+        row_num += 1
+        return True
     return False
 
 
@@ -236,7 +241,7 @@ def find_word(cik_file="cik.xlsx", keyword_file="keyword.xlsx",
 
             string_filter = {}
 
-            fiscal_year = find_fiscal_year(r.text, verbose, log_file)
+            fiscal_year = find_fiscal_year(r.text)
 
             if verbose:
                 print_log("fiscal_year={}".format(fiscal_year), log_file)
@@ -252,7 +257,6 @@ def find_word(cik_file="cik.xlsx", keyword_file="keyword.xlsx",
                     if not (string in string_filter) and check_string(string, keywords, verbose, sheet, url,
                                                                       log_file, company, fiscal_year):
                         string_filter[string] = {}
-
 
     print_log("{} paragraphs matched".format(row_num), log_file, verbose)
     if log_file is not None:
