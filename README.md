@@ -41,3 +41,9 @@ format_cik_file(output_file="cik_formatted.txt")
 # the original cik file is input.xlsx, the new cik file is cik_formatted, and you do not want to see the method's progress
 format_cik_file(input_file="input.xlsx", output_file="cik_formatted.xlsx", verbose=False)
 ```
+### Find paragraphs
+```def find_word(cik_file="cik.xlsx", keyword_file="keyword.xlsx",
+              output_file="output.xlsx", first_company=1, last_company=100,
+              verbose=True, log="find_word_log.txt",
+              company_log_file="from_cik_to_company_log.txt",
+              keyword_log_file="get_bag_of_words_log.txt")```
