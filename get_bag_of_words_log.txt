@@ -1,5 +1,2 @@
-"research cost" detected
-"development cost" detected
-"r&d" detected
-"research and development" detected
-4 keywords found
+"climate change" detected
+1 keywords found

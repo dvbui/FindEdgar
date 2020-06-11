@@ -4,7 +4,7 @@ import requests
 import xlrd
 import edgar
 from company import Company
-import xlwt
+import xlsxwriter
 from bs4 import BeautifulSoup
 
 edg = edgar.Edgar()
@@ -24,8 +24,8 @@ def format_cik_file(input_file="cik.xlsx", output_file="cik.xlsx", verbose=True,
     if os.path.exists(output_file):
         os.remove(output_file)
 
-    output_wb = xlwt.Workbook()
-    output_sheet = output_wb.add_sheet('Sheet 1')
+    output_wb = xlsxwriter.Workbook(output_file)
+    output_sheet = output_wb.add_worksheet()
 
     cik_filter = {}
     log = None
@@ -36,11 +36,13 @@ def format_cik_file(input_file="cik.xlsx", output_file="cik.xlsx", verbose=True,
         for j in range(0, cik_sheet.ncols):
             if str(cik_sheet.cell_value(i, j)).strip() == "":
                 continue
+
             try:
                 cik = str(int(cik_sheet.cell_value(i, j))).strip()
             except ValueError:
                 mess = "{} is not a valid CIK".format(cik_sheet.cell_value(i, j))
                 print_log(mess, log, verbose)
+                continue
 
             while len(cik) < 10:
                 cik = "0" + cik
@@ -55,7 +57,7 @@ def format_cik_file(input_file="cik.xlsx", output_file="cik.xlsx", verbose=True,
         output_sheet.write(row_cnt, 0, cik)
         row_cnt += 1
 
-    output_wb.save(output_file)
+    output_wb.close()
 
     print_log("{} CIKs detected".format(len(cik_filter)), log, verbose)
     if log is not None:
@@ -99,6 +101,7 @@ def from_cik_to_company(cik_file="cik.xlsx", first_company=1, last_company=100, 
             except KeyError:
                 mess = "{} is not a valid CIK".format(cik)
                 print_log(mess, log_file, verbose)
+                continue
 
             companies.append(Company(company_name, cik))
             mess = "#={}/{}, cik={}, company_name={}".format(len(companies), estimate_total, cik, company_name)
@@ -157,7 +160,7 @@ def check_string(string, keywords, verbose, sheet, url, log_file, company, fisca
         sheet.write(row_num, 2, fiscal_year)
         sheet.write(row_num, 3, str(matched_words))
         sheet.write(row_num, 4, str(url))
-        sheet.write(row_num, 5, string[0:32767])
+        sheet.write(row_num, 5, string)
         row_num += 1
         return True
     return False
@@ -216,8 +219,8 @@ def find_word(cik_file="cik.xlsx", keyword_file="keyword.xlsx",
     if verbose and (log is not None):
         log_file = open(log, "w", errors="ignore")
 
-    wb = xlwt.Workbook()
-    sheet = wb.add_sheet("Sheet 1")
+    wb = xlsxwriter.Workbook(output_file)
+    sheet = wb.add_worksheet()
 
     global row_num
     row_num = 0
@@ -262,10 +265,4 @@ def find_word(cik_file="cik.xlsx", keyword_file="keyword.xlsx",
     if log_file is not None:
         log_file.close()
 
-    wb.save("{}".format(output_file))
-
-
-
-
-
-
+    wb.close()
