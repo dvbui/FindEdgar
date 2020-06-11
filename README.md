@@ -25,8 +25,8 @@
 ### Standardize ```cik.xlsx```
 ```def format_cik_file(input_file="cik.xlsx", output_file="cik.xlsx", verbose=True, log_file=None)```
 #### Parameters
-- ```input_file``` (string): the path to the input file
-- ```output_file``` (string): the path to the output file)
+- ```input_file``` (string): the path to the original CI file
+- ```output_file``` (string): the path to the new CIK file
 - ```verbose``` (boolean): ```True``` if you want the method to print its progress, otherwise ```False```
 - ```log_file``` (string): the path to the log file. 
     - This file contains what is printed to the screen during the method's execution.
@@ -42,8 +42,26 @@ format_cik_file(output_file="cik_formatted.txt")
 format_cik_file(input_file="input.xlsx", output_file="cik_formatted.xlsx", verbose=False)
 ```
 ### Find paragraphs
-```def find_word(cik_file="cik.xlsx", keyword_file="keyword.xlsx",
-              output_file="output.xlsx", first_company=1, last_company=100,
-              verbose=True, log="find_word_log.txt",
-              company_log_file="from_cik_to_company_log.txt",
-              keyword_log_file="get_bag_of_words_log.txt")```
+```def find_word(cik_file="cik.xlsx", keyword_file="keyword.xlsx", output_file="output.xlsx", first_company=1, last_company=100, verbose=True, log="find_word_log.txt", company_log_file="from_cik_to_company_log.txt", keyword_log_file="get_bag_of_words_log.txt")```
+#### Parameters
+- ```cik_file``` (string): the path to the CIK file
+- ```keyword_file``` (string): the path to the keyword file
+- ```output_file``` (string): the path to the output file
+- ```first_company``` (int): the index of the first company
+- ```last_company``` (int): the index of the last company
+    - The companies are numbered from 1 according to the order they appear in the CIK file. If **the CIK are distinct**, the i-th company will be on row i-th of the file 
+- ```verbose``` (boolean): ```True``` if you want the method to print its progress, otherwise ```False```
+- ```log``` (string): the path to the log file of ```find_word()```
+- ```company_log_file``` (string): the path to the log file of ```from_cik_to_company()```
+- ```keyword_log_file``` (string): the path to the log file of ```get_bag_of_words()```
+#### Sample Usage
+```
+# find the paragraphs in the K-10s of the first 100 companies in the cik file
+find_word()
+
+# find the paragraphs in the K-10s of the companies whose index is between 101 and 200
+find_word(first_company=101, last_company=200)
+
+# find the paragraphs in the K-10s of the companies whose index is between 101 and 200, and the cik file is "cik_formatted.clsx"
+find_word(cik_file="cik_formatted.clsx", first_company=101, last_company=200)
+```
