@@ -30,7 +30,7 @@ def format_cik_file(input_file="cik.xlsx", output_file="cik.xlsx", verbose=True,
     cik_filter = {}
     log = None
     if verbose and (log_file is not None):
-        log = open(log_file, "w")
+        log = open(log_file, "w", errors="ignore")
 
     for i in range(0, cik_sheet.nrows):
         for j in range(0, cik_sheet.ncols):
@@ -69,7 +69,7 @@ def from_cik_to_company(cik_file="cik.xlsx", first_company=1, last_company=100, 
     cik_filter = {}
     log_file = None
     if verbose and not (log is None):
-        log_file = open(log, "w")
+        log_file = open(log, "w", errors="ignore")
 
     estimate_total = min(last_company - first_company + 1, cik_sheet.nrows*cik_sheet.ncols)
     company_cnt = 0
@@ -118,7 +118,7 @@ def get_bag_of_words(keyword_file="keyword.xlsx", verbose=True, log="get_bag_of_
     keywords_filter = {}
     log_file = None
     if verbose and not (log is None):
-        log_file = open(log, "w")
+        log_file = open(log, "w", errors="ignore")
     for i in range(keyword_sheet.nrows):
         for j in range(keyword_sheet.ncols):
             s = keyword_sheet.cell_value(i, j).strip().lower()
@@ -214,7 +214,7 @@ def find_word(cik_file="cik.xlsx", keyword_file="keyword.xlsx",
 
     log_file = None
     if verbose and (log is not None):
-        log_file = open(log, "w")
+        log_file = open(log, "w", errors="ignore")
 
     wb = xlwt.Workbook()
     sheet = wb.add_sheet("Sheet 1")
