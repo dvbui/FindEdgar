@@ -1,4 +1,12 @@
 # FindEdgar
+## Installation
+- Install Git
+- Install the lastest version of Python 3. If you're installing Python 3 on Windows, remember to add Python 3 to PATH
+```
+git clone https://github.com/dvbui/FindEdgar
+cd FindEdgar
+pip install requirements.txt
+```
 ## Input
 - Header row should not be included in the input files.
 ### CIK file: ```cik.xlsx```
@@ -20,8 +28,9 @@
     - Cell 5: HTTPS link to the K-10 form
     - Cell 6: The paragraph that has one of the keywords (case-insensitive)
 ## Usage
-### Start Edgar
-```python3 -i find_edgar.py```
+### Start FindEdgar
+- Navigate to the ```FindEdgar``` folder
+- ```python3 -i find_edgar.py```
 ### Standardize ```cik.xlsx```
 ```def format_cik_file(input_file="cik.xlsx", output_file="cik.xlsx", verbose=True, log_file=None)```
 #### Parameters
